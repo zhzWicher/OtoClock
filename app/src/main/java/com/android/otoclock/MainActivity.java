@@ -15,9 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextClock;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SettingFragment.CallBackListener {
 
-    private TextClock textClock;
+    public TextClock textClock;
 
     private Button navButton;
     private DrawerLayout drawerLayout;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         //时钟字体设置
         SpannableString ss = new SpannableString("HH:mm:ss");
         ss.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        ss.setSpan(new ForegroundColorSpan(Color.BLUE), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(Color.BLACK), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         ss.setSpan(new RelativeSizeSpan(0.5f), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         textClock.setFormat12Hour(ss);
 
@@ -48,5 +48,48 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
+    }
+
+    @Override
+    public void changeColor(int color) {
+        switch (color){
+            case 0:
+                SpannableString ss = new SpannableString("HH:mm:ss");
+                ss.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                ss.setSpan(new ForegroundColorSpan(Color.BLACK), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                ss.setSpan(new RelativeSizeSpan(0.5f), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                textClock.setFormat12Hour(ss);
+                break;
+            case 1:
+                SpannableString ss1 = new SpannableString("HH:mm:ss");
+                ss1.setSpan(new ForegroundColorSpan(Color.BLUE), 0, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                ss1.setSpan(new ForegroundColorSpan(Color.BLUE), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                ss1.setSpan(new RelativeSizeSpan(0.5f), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                textClock.setFormat12Hour(ss1);
+                break;
+            case 2:
+                SpannableString ss2 = new SpannableString("HH:mm:ss");
+                ss2.setSpan(new ForegroundColorSpan(Color.YELLOW), 0, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                ss2.setSpan(new ForegroundColorSpan(Color.YELLOW), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                ss2.setSpan(new RelativeSizeSpan(0.5f), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                textClock.setFormat12Hour(ss2);
+                break;
+            case 3:
+                SpannableString ss3 = new SpannableString("HH:mm:ss");
+                ss3.setSpan(new ForegroundColorSpan(Color.GREEN), 0, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                ss3.setSpan(new ForegroundColorSpan(Color.GREEN), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                ss3.setSpan(new RelativeSizeSpan(0.5f), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                textClock.setFormat12Hour(ss3);
+                break;
+            case 4:
+                SpannableString ss4 = new SpannableString("HH:mm:ss");
+                ss4.setSpan(new ForegroundColorSpan(Color.RED), 0, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                ss4.setSpan(new ForegroundColorSpan(Color.RED), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                ss4.setSpan(new RelativeSizeSpan(0.5f), 6, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                textClock.setFormat12Hour(ss4);
+                break;
+            default:
+                break;
+        }
     }
 }
