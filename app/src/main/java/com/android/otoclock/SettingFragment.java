@@ -1,26 +1,45 @@
 package com.android.otoclock;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.os.ParcelUuid;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextClock;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.security.PublicKey;
+import java.util.Calendar;
 
 
 public class SettingFragment extends Fragment {
@@ -49,9 +68,21 @@ public class SettingFragment extends Fragment {
 
     private static final int RED = 4;
 
+
+
     private TextClock textClock;
 
     private CallBackListener callBackListener;
+
+    private AlarmManager alarmManager;
+
+    private Button btnSelect;
+
+    Calendar currentTime = Calendar.getInstance();
+
+    private String ALARM_EVENT = "com.android.otoclock.AlarmReciever";
+
+
 
 
     @Override
@@ -66,8 +97,51 @@ public class SettingFragment extends Fragment {
         radioButton3 = (RadioButton) view.findViewById(R.id.radio_yellow);
         radioButton4 = (RadioButton) view.findViewById(R.id.radio_green);
         radioButton5 = (RadioButton) view.findViewById(R.id.radio_red);
+        btnSelect = (Button) view.findViewById(R.id.select_clock);
         callBackListener = (CallBackListener) getActivity();
+        textClock = (TextClock) view.findViewById(R.id.text_clock1);
+        alarmManager = (AlarmManager) getActivity().getSystemService(Service.ALARM_SERVICE);
 
+
+        //时钟字体设置
+        SpannableString ss = new SpannableString("HH:mm");
+        ss.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 5, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        textClock.setFormat12Hour(ss);
+
+        btnSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TimePickerDialog(getActivity(), 0, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        int alarmCounts = 0;
+                        //广播意图
+                        Intent intent = new Intent(ALARM_EVENT);
+                        intent.setComponent(new ComponentName("com.android.otoclock","com.android.otoclock.AlarmReceiver"));
+
+                        //创建PendingIntent
+                        PendingIntent pi = PendingIntent.getBroadcast(getActivity(),alarmCounts++,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                        Calendar c = Calendar.getInstance();
+                        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                        c.set(Calendar.MINUTE,minute);
+                        //设置闹钟唤醒服务
+                        if(aSwitch.isChecked()) {
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+                            } else {
+                                alarmManager.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pi);
+                            }
+
+                        }
+                        SpannableString ss = new SpannableString(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+                        ss.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 5, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                        textClock.setFormat12Hour(ss);
+                        //显示闹钟设置成功
+                        Toast.makeText(getActivity(),"闹钟设置成功",Toast.LENGTH_SHORT).show();
+                    }
+                },currentTime.get(Calendar.HOUR_OF_DAY),currentTime.get(Calendar.MINUTE),false).show();
+            }
+        });
 
 
 
@@ -110,5 +184,11 @@ public class SettingFragment extends Fragment {
 
     public interface CallBackListener {
         void changeColor(int color);
+    }
+
+    public class AlarmReciever extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+        }
     }
 }
