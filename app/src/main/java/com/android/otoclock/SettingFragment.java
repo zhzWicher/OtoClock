@@ -186,9 +186,5 @@ public class SettingFragment extends Fragment {
         void changeColor(int color);
     }
 
-    public class AlarmReciever extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-        }
-    }
+
 }
