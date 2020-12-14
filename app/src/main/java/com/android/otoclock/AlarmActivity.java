@@ -15,7 +15,7 @@ public class AlarmActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //加载音乐
-        mediaPlayer = MediaPlayer.create(this,R.raw.alalala);
+        mediaPlayer = MediaPlayer.create(this,R.raw.chuyin);
         mediaPlayer.setLooping(true);
         //播放音乐
         mediaPlayer.start();

@@ -41,7 +41,8 @@
             android:gravity="center"
             android:layout_weight="1"
             android:background="@drawable/btn_selector"
-            android:text="变更"/>
+            android:text="变更"
+            android:textSize="20sp"/>
     </LinearLayout>
 
     <View
@@ -68,21 +69,26 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:checked="true"/>
+            android:checked="true"
+            android:text="黑"/>
 
         <RadioButton
             android:id="@+id/radio_blue"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="1"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:text="蓝"
+            android:textColor="#6666FF"/>
 
         <RadioButton
             android:id="@+id/radio_yellow"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="黄"
+            android:textColor="#FFFF99"/>
 
         <RadioButton
             android:id="@+id/radio_green"
@@ -90,6 +96,8 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:gravity="center"
+            android:text="绿"
+            android:textColor="#66FF66"
             />
 
         <RadioButton
@@ -97,7 +105,9 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="红"
+            android:textColor="#FF3333"/>
     </RadioGroup>
 
 </LinearLayout>
